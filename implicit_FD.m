@@ -1,0 +1,153 @@
+%% TIME IS ROW WHILE SPACE IS COLUMN IN M X N MATRIX DEFINED ALL THROUGHOUT
+
+clc
+clear all
+close all
+%% ENTER SPACE AND TIME DOMAIN
+
+% MAXIMUM LENGTH
+L=1;
+
+% MAXIMUM TIME
+T=2;
+
+% NO OF POINTS IN SPACE DOMAIN
+N=101;
+
+% N is SPACE domain
+
+% NO OF POINTS IN TIME DOMAIN
+M=101; 
+
+% M is TIME domain
+
+x=linspace(0,L,N);
+t=linspace(0,T,M);
+
+dt=T/(M-1);
+dx=L/(N-1);
+
+%% DEFINE CONSTANTS
+
+% Db=linspace(10^-13,10^-12,100)
+% X0=linspace(10^-11,10^-9,100)
+
+d_ratio = 0.01; %(Db/Dc)
+
+mob_ratio = -1;
+
+%% ENTER N NTH TERM/TERMS APPROXIMATION
+
+v=1;
+
+l=(2*(1:v)-1)*pi/2;
+
+%% ENTER INITIAL CONCENTRATION IN ci
+
+ci=0;
+
+f=(1-ci)*4; %Initial factor
+A=f.*(cos(l)-1)./(2.*l-sin(2.*l));
+
+%% ENTER THE LENGTHS AT WHICH YOU WANT TO PLOT CONC VS TIME
+
+l_points=[0.1 0.5 0.9];
+
+%% ENTER THE TIMES AT WHICH YOU WANT TO PLOT BACTERIA VS LENGTH
+
+t_points=[0.5 1 2];
+
+%% CALCULATING C AND DC/DX AND VC = 1/C*DC/DX
+
+c=ones(M,N);
+dc=zeros(M,N);
+vc=zeros(M,N);
+
+c1=ones(M,N);
+
+for n=1:M
+    for i=1:N
+       c1(n,i) = c1(n,i) + exp(-l(1)^2*t(n))*A(1)*sin(l(1)*x(i));
+       for k=1:v
+       c(n,i) = c(n,i) + exp(-l(k)^2*t(n))*A(k)*sin(l(k)*x(i));
+       dc(n,i) = dc(n,i) + exp(-l(k)^2*t(n))*A(k)*cos(l(k)*x(i))*l(k);
+       end
+       vc(n,i) = dc(n,i)/c(n,i); % Velocity
+    end
+end
+
+%% PLOTTING CONCENTRATION VS TIME AT DIFFERENT LENGTHS
+
+k=0;
+o=0;
+hold on
+for i=l_points./L.*(N-1)
+    k=k+1;
+    o=o+1;
+    plot(t,c(:,i+1))
+    names{k}=sprintf('x = %0.2f*L_c',l_points(o));
+    k=k+1;
+
+    plot(t,c1(:,i+1),'--')
+    names{k}=sprintf('x = %0.2f*L_c (FTA)',l_points(o));
+end
+legend(names,'Location','best')
+ylabel('Ammonia concentration')
+xlabel('Time')
+title('Distribution of ammonia with time')
+hold off
+
+%% CALCULATING BACTERIAL CONCENTRATION
+
+b0 = zeros(M, N);
+func = @(b) root_BACD(d_ratio, mob_ratio, b, M, N, vc, dt, dx);
+
+options = optimoptions('lsqnonlin', 'Display', 'iter', 'Algorithm', 'trust-region-reflective');
+b = lsqnonlin(func, b0, [], [], options);
+
+%% PLOTTING BACTERIAL CONCENTRATION
+
+figure(2)
+hold on
+k=0;
+for i=t_points./T.*(M-1)
+    k=k+1;
+    plot(x,b(i+1,:))
+    names1{k}=sprintf('t = %0.2f*t_d',t_points(k));
+end
+legend(names1,'Location','best')
+ylabel('Bacteria concentration')
+xlabel('Length of the tube')
+title('Distribution of bacteria along the length of the 1D pore')
+hold off
+
+%% PLOTTING VELOCITY
+
+figure(3)
+hold on
+k=0;
+for i=t_points./T.*(M-1)
+    k=k+1;
+    plot(x,vc(i+1,:))
+    names2{k}=sprintf('t = %0.2f*t_d',t_points(k));
+end
+legend(names2,'Location','best')
+ylabel('Velocity')
+xlabel('Length of the tube')
+title('Velocity of bacteria along the length of the 1D pore')
+hold off
+
+k=0;
+figure(4)
+hold on
+for i=l_points./L.*(N-1)
+    k=k+1;
+    plot(t,vc(:,i+1))
+    names3{k}=sprintf('x = %0.2f*L_c',l_points(k));
+    
+end
+legend(names3,'Location','best')
+ylabel('Velocity')
+xlabel('Time')
+title('Velocity of ammonia with time')
+hold off
