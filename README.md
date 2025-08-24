@@ -162,17 +162,13 @@ Tip: Most scripts mark “DEFINE CONSTANTS” / “ENTER …” blocks for quick
 MIT License.
 ***
 
-## 🏷️ Citation
+## 🏷️ Credits
 
-BibTeX:
-```bibtex
-  Author = {Aaditya Amlan Panda},
-  Mentor  = {Prof. Akash Choudhary, Department of Chemical Engineering, IIT Kanpur},
-  Peer Support  = {Punam Singh, Kushagra Tiwari},
-  Year   = {2024},
-  Note   = {MATLAB code repository}
-}
-```
+- Author = Aaditya Amlan Panda,
+- Mentor  = Prof. Akash Choudhary, Department of Chemical Engineering, IIT Kanpur
+- Peer Support  = Punam Singh, Kushagra Tiwari
+- Year   = 2024
+
 
 ***
 
@@ -182,21 +178,4 @@ Developed in the context of project on chemotaxis, Keller–Segel modeling, and 
 
 ***
 
-## 📸 Pro Tip for GitHub
 
-Add a “Figures” section with screenshots (e.g., surface plots from explicit_FD_revised_model.m and density profiles from bact_method_of_liiines.m). It helps readers grasp results instantly.
-
-Example placeholders you can replace with your images:
-- docs/img/ammonia_surface.png  
-- docs/img/bacteria_profiles.png  
-- docs/img/grid_independence.png
-
-Markdown:
-```md
-## Figures
-![Ammonia distribution](docs/img/ammonia_surface.png)
-![Bacteria profiles](docs/img/bacteria_profiles.png)
-![Grid independence](docs/img/grid_independence.png)
-```
-
-Happy simulating! 🧪📈
