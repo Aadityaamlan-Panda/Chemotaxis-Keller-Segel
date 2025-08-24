@@ -164,10 +164,10 @@ MIT License.
 
 ## 🏷️ Credits
 
-- Author = Aaditya Amlan Panda,
-- Mentor  = Prof. Akash Choudhary, Department of Chemical Engineering, IIT Kanpur
-- Peer Support  = Punam Singh, Kushagra Tiwari
-- Year   = 2024
+- Author: Aaditya Amlan Panda,
+- Mentor: Prof. Akash Choudhary, Department of Chemical Engineering, IIT Kanpur
+- Peer Support: Punam Singh, Kushagra Tiwari
+- Year: 2024
 
 
 ***
